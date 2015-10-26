@@ -1,9 +1,10 @@
 var express = require('express');
 var request = require('request');
+require('dotenv').load()
 var app = express();
 
-var workspace = 0;
-var token = '';
+var workspace = process.env.WORKSPACE;
+var token = process.env.TOKEN;
 
 var firstOfCurrentMonth = function(date){
   var date = new Date();
