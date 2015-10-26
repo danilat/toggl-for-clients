@@ -6,10 +6,10 @@ html
     div.container
       div.page-header
         h1!= "Toggl detailed report"
-        p.lead Hours working for #[strong #{clientName}] since #[strong #{moment(since).format('DD/MM/YYYY')}]
+        p.lead Hours working for #[strong #{client.name}] since #[strong #{moment(since).format('DD/MM/YYYY')}]
       div.container
         p
-          a.btn.btn-success= "Descárgalo en PDF"
+          a.btn.btn-success(href="/pdf/#{client.id}")= "Descárgalo en PDF"
         table.table.table-condensed
           thead
             tr

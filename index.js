@@ -1,5 +1,6 @@
 var express = require('express');
 var request = require('request');
+var fs = require('fs');
 require('dotenv').load()
 var app = express();
 
@@ -28,12 +29,25 @@ app.get('/:id', function (req, res) {
   }
   var clientUrl = 'https://www.toggl.com/api/v8/clients/' + client;
   request.get(clientUrl, auth, function(err, response, body){
-    var clientName = JSON.parse(body).data.name;
+    var client = JSON.parse(body).data;
     request.get(detailtedReportUrl, auth, function (err, response, body) {
       body = JSON.parse(body);
-      res.render('index', { task_entries: body.data, since: since, clientName: clientName});
+      res.render('index', { task_entries: body.data, since: since, client: client});
     });
   });
+});
+
+app.get('/pdf/:id', function (req, res) {
+  var since = firstOfMonth(new Date());
+  var client = req.params.id;
+  var detailtedPdfReportUrl = "https://toggl.com/reports/api/v2/details.pdf?workspace_id=" + workspace + "&since=" + since + "&client_ids="+ client +"&user_agent=api_test";
+  var auth = {
+    'auth': {
+      'user': token,
+      'pass': 'api_token'
+    }
+  }
+  request.get(detailtedPdfReportUrl, auth).pipe(res);
 });
 
 var server = app.listen(3000, function () {
