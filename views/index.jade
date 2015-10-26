@@ -7,18 +7,25 @@ html
       div.page-header
         h1!= "Toggl detailed report"
         p.lead Hours working for #[strong #{clientName}] since #[strong #{moment(since).format('DD/MM/YYYY')}]
-      table.table.table-condensed
-        thead
-          tr
-            th= "Date"
-            th= "Task"
-            th= "Time"
-            th= "Project"
-        tbody
-          each task in task_entries
+      div.container
+        p
+          a.btn.btn-success= "Descárgalo en PDF"
+        table.table.table-condensed
+          thead
             tr
-              td 
-                strong= moment(task.start).format('DD/MM/YYYY')
-              td= task.description
-              td.label.label-default= task.dur/(3600*1000)
-              td= task.project
+              th= "Date"
+              th= "Task"
+              th= "Time"
+              th= "Project"
+          tbody
+            each task in task_entries
+              tr
+                td 
+                  strong= moment(task.start).format('DD/MM/YYYY')
+                td= task.description
+                td.label.label-default= task.dur/(3600*1000)
+                td= task.project
+
+    footer.footer
+      div.container
+        p.text-muted= "This is a side-project from BieraSolutions."
