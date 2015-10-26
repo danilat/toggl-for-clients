@@ -6,7 +6,7 @@ html
     div.container
       div.page-header
         h1!= "Toggl detailed report"
-        p.lead Hours working in OTE-Maubic since #{moment(since).format('DD/MM/YYYY')}
+        p.lead Hours working for #[strong #{clientName}] since #[strong #{moment(since).format('DD/MM/YYYY')}]
       table.table.table-condensed
         thead
           tr
@@ -20,5 +20,5 @@ html
               td 
                 strong= moment(task.start).format('DD/MM/YYYY')
               td= task.description
-              td= task.dur/(3600*1000)
+              td.label.label-default= task.dur/(3600*1000)
               td= task.project

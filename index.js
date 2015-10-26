@@ -26,12 +26,14 @@ app.get('/:id', function (req, res) {
       'pass': 'api_token'
     }
   }
-
-  request.get(detailtedReportUrl, auth, function (err, response, body) {
-    body = JSON.parse(body);
-    console.log(body);
-    res.render('index', { task_entries: body.data, since: since});
-  })
+  var clientUrl = 'https://www.toggl.com/api/v8/clients/' + client;
+  request.get(clientUrl, auth, function(err, response, body){
+    var clientName = JSON.parse(body).data.name;
+    request.get(detailtedReportUrl, auth, function (err, response, body) {
+      body = JSON.parse(body);
+      res.render('index', { task_entries: body.data, since: since, clientName: clientName});
+    });
+  });
 });
 
 var server = app.listen(3000, function () {
