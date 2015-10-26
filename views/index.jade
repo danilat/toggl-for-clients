@@ -1,0 +1,24 @@
+html
+  head
+    title= "Toggl detailed report"
+    link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous")
+  body
+    div.container
+      div.page-header
+        h1!= "Toggl detailed report"
+        p.lead Hours working in OTE-Maubic since #{moment(since).format('DD/MM/YYYY')}
+      table.table.table-condensed
+        thead
+          tr
+            th= "Date"
+            th= "Task"
+            th= "Time"
+            th= "Project"
+        tbody
+          each task in task_entries
+            tr
+              td 
+                strong= moment(task.start).format('DD/MM/YYYY')
+              td= task.description
+              td= task.dur/(3600*1000)
+              td= task.project

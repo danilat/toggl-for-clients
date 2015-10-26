@@ -2,21 +2,35 @@ var express = require('express');
 var request = require('request');
 var app = express();
 
-var workspace = 846698;
-var since = '2015-01-01';
+var workspace = 0;
+var token = '';
+
+var firstOfCurrentMonth = function(date){
+  var date = new Date();
+  date.setDate(1);
+  var currentMonth = (date.getMonth() + 1);
+  var since = (date.getFullYear() + '-' + currentMonth + '-01');
+  return since;
+}
+
+var since = firstOfCurrentMonth();
 
 var detailtedReportUrl = "https://toggl.com/reports/api/v2/details?workspace_id=" + workspace + "&since=" + since + "&user_agent=api_test";
 var auth = {
   'auth': {
-    'user': 'c31953257cdee55f45f5d30a0c736ba1',
+    'user': token,
     'pass': 'api_token'
   }
 }
 
+app.locals.moment = require('moment');
+app.set('view engine', 'jade');
+
 app.get('/', function (req, res) {
   request.get(detailtedReportUrl, auth, function (err, response, body) {
+    body = JSON.parse(body);
     console.log(body);
-    res.send('Hello World!');
+    res.render('index', { task_entries: body.data, since: since});
   })
 });
 
