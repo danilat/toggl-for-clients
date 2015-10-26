@@ -16,18 +16,19 @@ var firstOfCurrentMonth = function(date){
 
 var since = firstOfCurrentMonth();
 
-var detailtedReportUrl = "https://toggl.com/reports/api/v2/details?workspace_id=" + workspace + "&since=" + since + "&user_agent=api_test";
-var auth = {
-  'auth': {
-    'user': token,
-    'pass': 'api_token'
-  }
-}
-
 app.locals.moment = require('moment');
 app.set('view engine', 'jade');
 
-app.get('/', function (req, res) {
+app.get('/:id', function (req, res) {
+  var client = req.params.id;
+  var detailtedReportUrl = "https://toggl.com/reports/api/v2/details?workspace_id=" + workspace + "&since=" + since + "&client_ids="+ client +"&user_agent=api_test";
+  var auth = {
+    'auth': {
+      'user': token,
+      'pass': 'api_token'
+    }
+  }
+
   request.get(detailtedReportUrl, auth, function (err, response, body) {
     body = JSON.parse(body);
     console.log(body);
@@ -41,5 +42,3 @@ var server = app.listen(3000, function () {
 
   console.log('Example app listening at http://%s:%s', host, port);
 });
-
-//curl -v -u c31953257cdee55f45f5d30a0c736ba1:api_token -X GET "https://toggl.com/reports/api/v2/details?workspace_id=846698&since=2015-01-01&user_agent=api_test"
