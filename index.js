@@ -6,20 +6,18 @@ var app = express();
 var workspace = process.env.WORKSPACE;
 var token = process.env.TOKEN;
 
-var firstOfCurrentMonth = function(date){
-  var date = new Date();
+var firstOfMonth = function(date){
   date.setDate(1);
   var currentMonth = (date.getMonth() + 1);
   var since = (date.getFullYear() + '-' + currentMonth + '-01');
   return since;
 }
 
-var since = firstOfCurrentMonth();
-
 app.locals.moment = require('moment');
 app.set('view engine', 'jade');
 
 app.get('/:id', function (req, res) {
+  var since = firstOfMonth(new Date());
   var client = req.params.id;
   var detailtedReportUrl = "https://toggl.com/reports/api/v2/details?workspace_id=" + workspace + "&since=" + since + "&client_ids="+ client +"&user_agent=api_test";
   var auth = {
