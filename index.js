@@ -32,11 +32,15 @@ app.get('/:id', function (req, res) {
   }
   var clientUrl = 'https://www.toggl.com/api/v8/clients/' + client;
   request.get(clientUrl, auth, function(err, response, body){
-    var customer = JSON.parse(body).data;
-    request.get(detailtedReportUrl, auth, function (err, response, body) {
-      body = JSON.parse(body);
-      res.render('index', { task_entries: body.data, since: since, client: customer});
-    });
+    if(response.statusCode == 200){
+      var customer = JSON.parse(body).data;
+      request.get(detailtedReportUrl, auth, function (err, response, body) {
+        body = JSON.parse(body);
+        res.render('index', { task_entries: body.data, since: since, client: customer});
+      });
+    }else{
+      res.status(404).send('Not found');
+    }
   });
 });
 
