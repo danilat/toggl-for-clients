@@ -2,14 +2,19 @@ html
   head
     title= "Toggl detailed report"
     link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous")
+    script(src="https://fb.me/react-0.14.0.min.js")
+    script(src="https://fb.me/react-dom-0.14.0.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js")
+    script(src="app.js", type="text/babel")
   body
     div.container
+      //div#example
       div.page-header
         h1!= "Toggl detailed report"
         p.lead Hours working for #[strong #{client.name}] since #[strong #{moment(since).format('DD/MM/YYYY')}]
-      div.container
+      div.container#main
         p
-          a.btn.btn-success(href="/pdf/#{client.id}")= "Descárgalo en PDF"
+          a.btn.btn-success(href="/pdf/#{client.id}")= "Download PDF Report"
         table.table.table-condensed
           thead
             tr
