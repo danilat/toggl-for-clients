@@ -1,7 +1,9 @@
 var express = require('express');
 var request = require('request');
 var fs = require('fs');
-require('dotenv').load()
+if(process.env.NODE_ENV != 'production'){
+  require('dotenv').load();
+}
 var app = express();
 
 var workspace = process.env.WORKSPACE;
@@ -16,6 +18,7 @@ var firstOfMonth = function(date){
 
 app.locals.moment = require('moment');
 app.set('view engine', 'jade');
+app.use(express.static('public'));
 
 app.get('/:id', function (req, res) {
   var since = firstOfMonth(new Date());
@@ -29,10 +32,10 @@ app.get('/:id', function (req, res) {
   }
   var clientUrl = 'https://www.toggl.com/api/v8/clients/' + client;
   request.get(clientUrl, auth, function(err, response, body){
-    var client = JSON.parse(body).data;
+    var customer = JSON.parse(body).data;
     request.get(detailtedReportUrl, auth, function (err, response, body) {
       body = JSON.parse(body);
-      res.render('index', { task_entries: body.data, since: since, client: client});
+      res.render('index', { task_entries: body.data, since: since, client: customer});
     });
   });
 });
