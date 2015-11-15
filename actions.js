@@ -24,6 +24,19 @@ var actions = function(app){
       }
     });
   });
+  app.get('/api/:id', auth, function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var since = firstOfMonth(new Date());
+    toggl.client(req.params.id, function(err, client){
+      if(!err){
+        toggl.report(req.params.id, since, function (err, tasks) {
+          res.send({ tasks: tasks, since: since, client: client});
+        });
+      }else{
+        res.status(404).send('Not found');
+      }
+    });
+  });
   app.get('/pdf/:id', function (req, res) {
     var since = firstOfMonth(new Date());
     toggl.pdfReport(req.params.id, since, res);
