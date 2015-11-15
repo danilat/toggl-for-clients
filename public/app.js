@@ -10,7 +10,7 @@ var id = parts[parts.length-1]
 
 var CustomerInfo = React.createClass({
   render: function(){
-    return <p className="lead">Tasks working for {this.props.client.name}</p>
+    return <p className="lead">Tasks working for {this.props.client.name} since {this.props.since}</p>
   }
 });
 
@@ -18,9 +18,9 @@ var TasksList = React.createClass({
   render: function() {
     var createTask = function(task, index) {
       return <tr>
-        <td><strong>{task.start}</strong></td>
+        <td><strong>{moment(task.start).format('DD/MM/YYYY')}</strong></td>
         <td>{task.description}</td>
-        <td className="label label-default">{task.dur}</td>
+        <td className="label label-default">{task.dur/(3600*1000)}</td>
         <td>{task.project}</td>
       </tr>;
     };
@@ -40,6 +40,7 @@ var TasksBox = React.createClass({
     return {
       tasks: [],
       since: '',
+      downloadPdfUrl: '/pdf/' + id,
       client: {name: ''},
     };
   },
@@ -57,12 +58,12 @@ var TasksBox = React.createClass({
     }.bind(this));
   },
   render: function() {
-    return <div className="container">
+    return <div className="page-header">
         <h1>Toggl detailed report</h1>
-        <CustomerInfo client={this.state.client} />
+        <CustomerInfo client={this.state.client} since={this.state.since}/>
         <div className="container" id="main">
           <p>
-            <a className="btn btn-success">Download PDF Report</a>
+            <a className="btn btn-success" href={this.state.downloadPdfUrl}>Download PDF Report</a>
           </p>
           <TasksList tasks={this.state.tasks}/>
         </div>

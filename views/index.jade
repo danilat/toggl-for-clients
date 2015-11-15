@@ -6,31 +6,11 @@ html
     script(src="https://fb.me/react-dom-0.14.0.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/superagent/1.2.0/superagent.js")
+    script(src="http://momentjs.com/downloads/moment-with-locales.min.js")
     script(src="app.js", type="text/babel")
   body
     div.container
       div#app
-      div.page-header
-        h1!= "Toggl detailed report"
-        p.lead Hours working for #[strong #{client.name}] since #[strong #{moment(since).format('DD/MM/YYYY')}]
-      div.container#main
-        p
-          a.btn.btn-success(href="/pdf/#{client.id}")= "Download PDF Report"
-        table.table.table-condensed
-          thead
-            tr
-              th= "Date"
-              th= "Task"
-              th= "Time"
-              th= "Project"
-          tbody
-            each task in task_entries
-              tr
-                td 
-                  strong= moment(task.start).format('DD/MM/YYYY')
-                td= task.description
-                td.label.label-default= task.dur/(3600*1000)
-                td= task.project
 
     footer.footer
       div.container
